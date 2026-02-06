@@ -1,2 +1,3 @@
-# add-practical-applications-hysteresis-note-section-to-the-landing-page
-Exported from Caffeine project: Add Practical Applications + Hysteresis Note section to the landing page
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

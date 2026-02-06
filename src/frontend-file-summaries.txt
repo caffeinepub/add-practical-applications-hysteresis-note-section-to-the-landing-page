@@ -1,0 +1,23 @@
+{
+  "frontend/src/App.tsx": "Main application component orchestrating all sections including the new PracticalApplicationsSection positioned after ThresholdDiagramSection, passing applications and hysteresis data from config.",
+  "frontend/src/siteConfig.ts": "Extended configuration with Application and HysteresisNote types, containing structured data for 5 practical applications and hysteresis note, plus updated media.images array to include the uploaded hardware setup photo.",
+  "frontend/src/components/TopNav.tsx": "Responsive navigation header with updated navigation items including new \"Applications\" link for smooth scrolling to the practical applications section.",
+  "frontend/src/components/sections/HeroSection.tsx": "Hero section displaying project logo, name, tagline, and CTA buttons with animated entrance effects and background banner image.",
+  "frontend/src/components/sections/OverviewSection.tsx": "Project overview section rendering descriptive content from config in a centered, readable layout.",
+  "frontend/src/components/sections/FeaturesSection.tsx": "Features section displaying key features in a responsive card grid with hover effects and feature icon banner.",
+  "frontend/src/components/sections/DemoMediaSection.tsx": "Demo and media section supporting video embeds and image galleries with fallback for empty content.",
+  "frontend/src/components/sections/TechStackSection.tsx": "Tech stack section displaying technologies as interactive badges in a centered, wrapped layout.",
+  "frontend/src/components/sections/ContactSection.tsx": "Contact form section with validation, loading states, success/error feedback, and backend submission via custom hook.",
+  "frontend/src/components/Footer.tsx": "Footer component with config-driven branding (project name and description passed as props) and caffeine.ai attribution with heart icon.",
+  "frontend/src/hooks/useSubmitContact.ts": "Custom React hook managing contact form submission state (loading, success, error) with automatic message clearing.",
+  "frontend/src/lib/backendClient.ts": "Backend client wrapper providing typed functions for contact form submission and contact retrieval with error handling.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for backend data fetching with actor instance caching for the backend client.",
+  "frontend/src/index.css": "Global styles with warm terracotta/amber OKLCH color palette including success and warning color tokens for light and dark modes, custom animations, and smooth scrolling.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with warm color palette, custom fonts, shadows, and animation utilities.",
+  "frontend/index.html": "HTML entry point with SEO meta tags and Open Graph tags for social sharing.",
+  "frontend/src/components/sections/ThresholdDiagramSection.tsx": "Interactive simulation section displaying real-time temperature changes and motor/fan state with visual indicators, using 28°C threshold from props with play/pause controls.",
+  "frontend/src/components/sections/ManualSection.tsx": "Step-by-step user manual section with components list, wiring instructions, and operation guide explicitly stating 28°C threshold and >= activation logic.",
+  "frontend/src/components/sections/ArduinoCodeSection.tsx": "Arduino code display section with complete DHT11 sketch using 28°C threshold, copy-to-clipboard functionality, and library installation instructions.",
+  "frontend/src/components/sections/PracticalApplicationsSection.tsx": "New section component displaying 5 practical real-world applications for the DHT11 system with scenario, logic, and daily benefit, plus a hysteresis technical note with bad vs good examples using Card and Alert components.",
+  "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg": "Static asset image showing the physical DHT11 temperature and humidity monitoring system hardware setup with Arduino, breadboard, and components."
+}

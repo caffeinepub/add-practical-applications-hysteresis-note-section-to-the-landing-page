@@ -1,0 +1,48 @@
+{
+  "kind": "build_request",
+  "title": "Add uploaded photo to Demo & Media section",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-5",
+      "text": "Add the user-uploaded image \"WhatsApp Image 2026-02-06 at 9.23.49 AM.jpeg\" to the frontend static assets and display it in the Demo & Media section.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "recent-messages"
+        ],
+        "quotes": [
+          "add this image in demo and media"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The uploaded image file is added to the repo under a stable public path (e.g., within `frontend/public/assets/`), with a reasonable, URL-safe filename.",
+        "`frontend/src/siteConfig.ts` is updated so `siteConfig.media.images` includes the correct public URL for the added image (e.g., `/assets/...`).",
+        "The Demo & Media section renders the image in the existing image grid (via `frontend/src/components/sections/DemoMediaSection.tsx`) and no longer shows the \"Demo content coming soon\" placeholder when the image is present.",
+        "The page builds successfully and the image loads correctly in the browser without requiring backend changes."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files in `frontend/src/components/ui` or other immutable paths listed in SYSTEM_CONTEXT.",
+    "Do not route demo/media images through the backend; serve them as frontend static assets."
+  ],
+  "nonGoals": [
+    "Adding or changing backend (Motoko) functionality.",
+    "Implementing image uploads from the UI or storing media dynamically."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
