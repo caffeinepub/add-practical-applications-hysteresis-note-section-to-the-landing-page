@@ -1,84 +1,36 @@
 {
   "kind": "build_request",
-  "title": "Fix Demo & Media image not loading and re-add asset",
+  "title": "Re-add uploaded Demo & Media image asset so it loads in production",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-6",
-      "text": "Re-add the user-uploaded demo image asset to the frontend static assets so it is present in production and matches the path referenced by the app (currently `frontend/src/siteConfig.ts` uses `/assets/whatsapp-image-2026-02-06-092349.jpeg`).",
+      "id": "REQ-10",
+      "text": "Add the newly uploaded image file \"WhatsApp Image 2026-02-06 at 9.23.49 AM-1.jpeg\" to the frontend static assets and ensure the Demo & Media section loads it correctly in production by matching the exact path referenced by `frontend/src/siteConfig.ts` (`media.images` currently includes `assets/whatsapp-image-2026-02-06-092349.jpeg`). If necessary, rename/copy the uploaded image to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` so the deployed build contains the asset at that path.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-7"
+          "recent-messages"
         ],
         "quotes": [
-          "re add the image it still not opening"
+          "re add it again",
+          "The user has uploaded 1 image(s): WhatsApp Image 2026-02-06 at 9.23.49 AM-1.jpeg."
         ]
       },
       "acceptanceCriteria": [
-        "The file exists at the expected public path at build time (e.g., `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg`) and is included in the production build output.",
-        "Loading the image URL in the deployed app returns HTTP 200 and displays the image (no broken image icon)."
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Make Demo & Media image URLs robust to the deployed base path by resolving `siteConfig.media.images` entries using the app base URL (avoid hard-coded leading `/` paths that can break in production).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-7"
-        ],
-        "quotes": [
-          "re add the image it still not opening"
-        ]
-      },
-      "acceptanceCriteria": [
-        "With the deployed canister URL (including any subpath/base), the demo image renders correctly without manual refreshes or URL edits.",
-        "`frontend/src/siteConfig.ts` and the DemoMedia section use a consistent convention (either relative paths like `assets/...` or base-url-resolved absolute URLs) so the image works in local dev and production."
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "In `frontend/src/components/sections/DemoMediaSection.tsx`, add a user-friendly fallback when an image fails to load (e.g., show a short English error message and/or a placeholder block instead of a broken image).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-7"
-        ],
-        "quotes": [
-          "re add the image it still not opening"
-        ]
-      },
-      "acceptanceCriteria": [
-        "If the image URL is invalid, the UI shows an English fallback state (not an empty/broken image) while keeping the rest of the section usable.",
-        "The console does not show uncaught runtime errors from image load failures."
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "text": "Allow users to open the demo image at full size by making each Demo & Media image clickable (open the original image URL in a new tab/window).",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-7"
-        ],
-        "quotes": [
-          "re add the image it still not opening"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Clicking a demo image opens the full-resolution image in a new browser tab (with appropriate `target`/`rel` attributes).",
-        "This works for all entries in `siteConfig.media.images`."
+        "The repository contains `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` (from the uploaded image, either via rename or copy).",
+        "In `frontend/src/siteConfig.ts`, `siteConfig.media.images` continues to reference a path that exists in `frontend/public` at build time (either unchanged if `assets/whatsapp-image-2026-02-06-092349.jpeg` is created, or updated to the actual shipped filename).",
+        "When the app is built and deployed under a non-root base path, the Demo & Media image renders without triggering the \"Image failed to load\" fallback in `frontend/src/components/sections/DemoMediaSection.tsx`.",
+        "Clicking the image opens the full-size image in a new tab (existing behavior remains working)."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under `frontend/src/components/ui` (read-only shadcn/ui sources).",
-    "Keep the backend architecture unchanged (no new canisters/services)."
+    "Frontend immutable paths must not be edited: `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, `frontend/src/components/ui`.",
+    "Keep backend as a single-actor Motoko canister; no backend changes are required for this request."
   ],
   "nonGoals": [
-    "Adding new media types beyond the existing `videoUrl` and `images` fields.",
-    "Changing the content of the landing page sections unrelated to Demo & Media."
+    "No changes to the contact form flow or Motoko backend logic.",
+    "No new landing-page sections or navigation changes beyond what is required to make the demo image load."
   ],
   "imageRequirements": {
     "required": [],

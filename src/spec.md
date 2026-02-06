@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the Demo & Media image so it loads reliably in production, and improve the Demo & Media image UX.
+**Goal:** Ensure the Demo & Media section image asset is included in the frontend build and loads correctly in production.
 
 **Planned changes:**
-- Re-add the user-uploaded demo image file to the frontend public/static assets so the app’s referenced path is present in production builds.
-- Update Demo & Media image URL handling to be robust to deployed base paths (avoid hard-coded leading `/` paths that can break in production).
-- Add a user-friendly fallback UI in the Demo & Media section when an image fails to load (no broken image icon; no uncaught errors).
-- Make Demo & Media images clickable to open the full-size original image in a new tab/window.
+- Add the uploaded image file to the frontend static assets so it is shipped with production builds.
+- Ensure the shipped filename/path matches what `frontend/src/siteConfig.ts` references (currently `assets/whatsapp-image-2026-02-06-092349.jpeg`), by renaming/copying the uploaded file to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` or updating the config to the actual shipped filename.
+- Verify the Demo & Media section renders the image under non-root base paths without triggering the “Image failed to load” fallback, and that clicking still opens the full-size image in a new tab.
 
-**User-visible outcome:** Demo images load correctly in local and deployed environments; if an image can’t load, users see a clear fallback message; users can click images to view them full size in a new tab.
+**User-visible outcome:** The Demo & Media image reliably displays in deployed environments (including non-root base paths), and users can click it to view the full-size image in a new tab.

@@ -1,39 +1,30 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T04:07:43.545Z",
-  "summary": "REQ-6 through REQ-9 appear implemented: the demo image asset is present under public assets, Demo & Media image URLs are resolved against the app base path via a new helper, images have an error fallback UI, and images are clickable to open full-size in a new tab. However, the diff summary also indicates multiple unrelated landing page expansions/section changes that were not requested and may violate the stated non-goals (changes unrelated to Demo & Media).",
-  "missing_requirements": [],
-  "hallucinated_features": [
+  "generatedAt": "2026-02-06T04:13:12.811Z",
+  "summary": "The diff does not add or update any frontend static image assets or relevant frontend code/config. Only `project_state.json` was modified, so REQ-10 is not implemented in the provided changes.",
+  "missing_requirements": [
     {
-      "description": "Added/expanded multiple new landing page/documentation sections and related navigation/config (e.g., PracticalApplicationsSection, ThresholdDiagramSection, ManualSection, ArduinoCodeSection, nav updates), which were not requested and are outside the Demo & Media scope.",
-      "reason": "BuildRequest non-goals explicitly state not to change landing page sections unrelated to Demo & Media; the diff summary shows broad additions/updates beyond Demo & Media.",
+      "id": "REQ-10",
+      "requirement": "Add the newly uploaded image to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` (via rename/copy if needed) and ensure the Demo & Media section loads it correctly in production by matching the path referenced by `frontend/src/siteConfig.ts` (or updating the config to the shipped filename).",
+      "reason": "No new files were added (including the required JPEG under `frontend/public/assets/`), and no changes to `frontend/src/siteConfig.ts` or `frontend/src/components/sections/DemoMediaSection.tsx` are present in the diff summary.",
       "evidence": [
-        "frontend-file-summaries.txt (mentions PracticalApplicationsSection, ThresholdDiagramSection, ManualSection, ArduinoCodeSection, TopNav updates, App.tsx orchestration)",
-        "frontend/src/siteConfig.ts (summary indicates extended configuration for applications/hysteresis beyond media)"
-      ]
-    },
-    {
-      "description": "Global styling, Tailwind config, SEO meta updates unrelated to Demo & Media.",
-      "reason": "Not requested by REQ-6/7/8/9 and appears to be general redesign/SEO work beyond fixing Demo & Media image loading.",
-      "evidence": [
-        "frontend-file-summaries.txt (mentions frontend/src/index.css palette changes, frontend/tailwind.config.js extensions, frontend/index.html SEO/OG tags)"
-      ]
-    },
-    {
-      "description": "Contact form behavior/backend client/query hook updates beyond Demo & Media.",
-      "reason": "Not requested; BuildRequest focuses only on Demo & Media image asset and behavior.",
-      "evidence": [
-        "frontend-file-summaries.txt (mentions ContactSection validation/loading states, useSubmitContact.ts, backendClient.ts, useQueries.ts changes)"
+        "ADDED FILES: none",
+        "MODIFIED FILES: project_state.json"
       ]
     }
   ],
-  "confidence": 0.74,
+  "hallucinated_features": [
+    {
+      "description": "Modified `project_state.json` (project metadata/state) despite the request focusing on adding a frontend static image asset and not requiring any project-state updates.",
+      "reason": "The BuildRequest requirements and constraints focus on ensuring a specific image exists at a specific public path and is referenced/loads correctly; `project_state.json` changes are not requested or necessary to satisfy REQ-10.",
+      "evidence": [
+        "project_state.json (modified)"
+      ]
+    }
+  ],
+  "confidence": 0.83,
   "changed_files": [
-    "frontend-file-summaries.txt",
-    "frontend/src/components/sections/DemoMediaSection.tsx",
-    "frontend/src/lib/resolveAppUrl.ts",
-    "frontend/src/siteConfig.ts",
     "project_state.json"
   ]
 }

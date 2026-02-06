@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 15,
+  "projectStateVersion": 17,
   "summary": "ICP dapp scaffold with Motoko backend canister and Vite/React/Tailwind frontend, including a marketing-style landing page, Internet Identity authentication hooks, and a contact submission flow.",
   "architectural_notes": [
     "Frontend uses generated Candid bindings and an actor creation hook to call the Motoko backend.",
@@ -9,7 +9,8 @@
     "Landing page content is organized as discrete section components, allowing additional documentation-style sections (e.g., manual/code/diagrams) to be added without restructuring the overall app shell."
   ],
   "known_issues": [
-    "Demo Media section image fails to open/load in production; user requested the image be re-added."
+    "Demo Media section image fails to open/load in production; user requested the image be re-added.",
+    "Demo Media section image still does not load after re-adding; likely deployed asset path/base URL mismatch remains."
   ],
   "isFixRequest": true,
   "generatedImages": [
@@ -192,6 +193,14 @@
       "title": "Allow users to open the demo image at full size by making each Demo & Media image clickable (open the original image URL in a new tab/window).",
       "reqIds": [
         "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-newly-uploaded-image-file-whatsapp-image-2026-02-06-at-9-23-49-am-1-jpeg-to-the-frontend-static-assets-and-ensure-the-demo-media-section-loads-it-correctly-in-production-by-matching-the-exact-path-referenced-by-frontend-src-siteconfig-ts-media-images-currently-includes-assets-whatsapp-image-2026-02-06-092349-jpeg-if-necessary-rename-copy-the-uploaded-image-to-frontend-public-assets-whatsapp-image-2026-02-06-092349-jpeg-so-the-deployed-build-contains-the-asset-at-that-path",
+      "title": "Add the newly uploaded image file \"WhatsApp Image 2026-02-06 at 9.23.49 AM-1.jpeg\" to the frontend static assets and ensure the Demo & Media section loads it correctly in production by matching the exact path referenced by `frontend/src/siteConfig.ts` (`media.images` currently includes `assets/whatsapp-image-2026-02-06-092349.jpeg`). If necessary, rename/copy the uploaded image to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` so the deployed build contains the asset at that path.",
+      "reqIds": [
+        "REQ-10"
       ],
       "version": 1
     }
