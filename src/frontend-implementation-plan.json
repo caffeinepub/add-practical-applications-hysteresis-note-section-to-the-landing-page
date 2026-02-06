@@ -1,27 +1,53 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Re-add Demo & Media image asset to production build",
+  "title": "Update Arduino Code section and site marketing copy for DHT11 (pin 6) + active-LOW relay (pin 8) + LED (pin 12) with 27°C/26°C hysteresis",
   "requirements": [
     {
-      "id": "REQ-10",
-      "summary": "Ship the uploaded Demo & Media image in frontend static assets at the exact path referenced by siteConfig so it loads under non-root base paths and preserves click-to-open behavior.",
+      "id": "REQ-20",
+      "summary": "Replace the displayed Arduino sketch in ArduinoCodeSection with the exact user-provided DHT11 + active-LOW relay + LED hysteresis sketch and ensure copy-to-clipboard matches it exactly.",
       "acceptanceCriteria": [
-        "The repository contains `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` (from the uploaded image, either via rename or copy).",
-        "In `frontend/src/siteConfig.ts`, `siteConfig.media.images` continues to reference a path that exists in `frontend/public` at build time (either unchanged if `assets/whatsapp-image-2026-02-06-092349.jpeg` is created, or updated to the actual shipped filename).",
-        "When the app is built and deployed under a non-root base path, the Demo & Media image renders without triggering the \"Image failed to load\" fallback in `frontend/src/components/sections/DemoMediaSection.tsx`.",
-        "Clicking the image opens the full-size image in a new tab (existing behavior remains working)."
+        "The code block shown in the Arduino Code section matches the user-provided sketch exactly (including pin numbers, active-LOW relay behavior, hysteresis conditions, and delay(2000)).",
+        "Copy-to-clipboard copies the updated sketch content exactly.",
+        "The Arduino Code section does not interpolate `thresholdC` into the sketch in a way that changes the provided code."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg",
-          "operation": "create",
-          "description": "Add the uploaded image asset to the public static assets so the deployed build includes it at the exact path referenced by config. Source should be the uploaded file \"WhatsApp Image 2026-02-06 at 9.23.49 AM-1.jpeg\" (copy/rename into this canonical filename)."
-        },
+          "path": "frontend/src/components/sections/ArduinoCodeSection.tsx",
+          "operation": "modify",
+          "description": "Replace the current template-literal Arduino sketch (which interpolates thresholdC) with the exact user-provided code block text (DHT11 on pin 6, relay on pin 8 active-LOW, LED on pin 12, fanState memory, 27°C ON / 26°C OFF hysteresis, delay(2000)). Ensure the rendered <code> content and the clipboard copy source are the same static string so the copied text matches exactly."
+        }
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "summary": "Update all Arduino Code section user-facing text to accurately describe the new pins, active-LOW relay behavior, 2-second sampling, and 27°C/26°C hysteresis in English.",
+      "acceptanceCriteria": [
+        "Section title/subtitle, filename label, badges, and “How It Works” bullets describe: DHT11 pin 6, relay pin 8 (active LOW), LED pin 12, 2-second sampling, and hysteresis 27°C ON / 26°C OFF.",
+        "No user-facing text in this section mentions the old pin numbers (2/7) or the old single-threshold logic.",
+        "All user-facing strings in this section are English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/ArduinoCodeSection.tsx",
+          "operation": "modify",
+          "description": "Update Arduino Code section text elements (subtitle/description, filename label if needed, badges, and 'How It Works' bullets) to describe the provided sketch: DHT11 data on pin 6, relay-controlled fan on pin 8 active-LOW (HIGH=OFF, LOW=ON), LED indicator on pin 12, reads every 2 seconds, and hysteresis logic 27°C ON / 26°C OFF. Remove/avoid any mention of old pins (2/7) or single-threshold behavior, and ensure all strings are English."
+        }
+      ]
+    },
+    {
+      "id": "REQ-22",
+      "summary": "Update siteConfig to use a 27°C threshold and revise marketing/SEO copy to reflect 27°C ON / 26°C OFF hysteresis (not 28°C).",
+      "acceptanceCriteria": [
+        "`siteConfig.temperatureThresholdC` equals 27.",
+        "No `siteConfig` marketing copy or SEO strings claim activation at 28°C; copy reflects 27°C ON / 26°C OFF hysteresis.",
+        "The app renders without TypeScript errors after the copy/config updates."
+      ],
+      "file_operations": [
         {
           "path": "frontend/src/siteConfig.ts",
           "operation": "modify",
-          "description": "Verify `siteConfig.media.images` references `assets/whatsapp-image-2026-02-06-092349.jpeg` (or adjust only if the shipped filename/path differs) so the referenced path exists under `frontend/public` at build time and resolves correctly via the existing base-path-aware URL resolver."
+          "description": "Set siteConfig.temperatureThresholdC to 27 and update any config-provided marketing/SEO strings that mention 28°C or a single-threshold behavior so they instead reflect 27°C ON / 26°C OFF hysteresis (overview text, features descriptions, and seo description/ogDescription where applicable)."
         }
       ]
     }

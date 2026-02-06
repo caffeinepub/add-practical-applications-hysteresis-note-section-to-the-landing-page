@@ -1,30 +1,40 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T04:13:12.811Z",
-  "summary": "The diff does not add or update any frontend static image assets or relevant frontend code/config. Only `project_state.json` was modified, so REQ-10 is not implemented in the provided changes.",
-  "missing_requirements": [
-    {
-      "id": "REQ-10",
-      "requirement": "Add the newly uploaded image to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` (via rename/copy if needed) and ensure the Demo & Media section loads it correctly in production by matching the path referenced by `frontend/src/siteConfig.ts` (or updating the config to the shipped filename).",
-      "reason": "No new files were added (including the required JPEG under `frontend/public/assets/`), and no changes to `frontend/src/siteConfig.ts` or `frontend/src/components/sections/DemoMediaSection.tsx` are present in the diff summary.",
-      "evidence": [
-        "ADDED FILES: none",
-        "MODIFIED FILES: project_state.json"
-      ]
-    }
-  ],
+  "generatedAt": "2026-02-06T05:01:11.198Z",
+  "summary": "REQ-20/21/22 appear implemented: ArduinoCodeSection now contains a DHT11 (pin 6) + relay (pin 8 active-LOW) + LED (pin 12) sketch with fanState memory, 27°C ON / 26°C OFF hysteresis, and delay(2000); user-facing text/badges describe the same in English; siteConfig.temperatureThresholdC is set to 27 and marketing copy reflects 27/26 hysteresis. Additional unrequested updates were made to other sections and project metadata.",
+  "missing_requirements": [],
   "hallucinated_features": [
     {
-      "description": "Modified `project_state.json` (project metadata/state) despite the request focusing on adding a frontend static image asset and not requiring any project-state updates.",
-      "reason": "The BuildRequest requirements and constraints focus on ensuring a specific image exists at a specific public path and is referenced/loads correctly; `project_state.json` changes are not requested or necessary to satisfy REQ-10.",
+      "description": "Updated the User Manual section wiring/operation copy (pins and active-LOW relay notes).",
+      "reason": "BuildRequest only asked to update ArduinoCodeSection.tsx text/code and siteConfig.ts; it did not request changes to ManualSection.tsx.",
       "evidence": [
-        "project_state.json (modified)"
+        "frontend/src/components/sections/ManualSection.tsx"
+      ]
+    },
+    {
+      "description": "Changed the Interactive Simulation (ThresholdDiagramSection) to hardcode hysteresis logic (ON at 27°C, OFF at 26°C) and manage fanState with useEffect.",
+      "reason": "Not requested by REQ-20/21/22; requirement scope is ArduinoCodeSection.tsx and siteConfig.ts only.",
+      "evidence": [
+        "frontend/src/components/sections/ThresholdDiagramSection.tsx"
+      ]
+    },
+    {
+      "description": "Project documentation/state metadata references a new/expanded 'PracticalApplicationsSection' and other unrelated section/navigation changes.",
+      "reason": "Not part of the BuildRequest (which is limited to updating the Arduino Code section and siteConfig). The diff evidence shows these claims in metadata, not in requested files.",
+      "evidence": [
+        "frontend-file-summaries.txt",
+        "project_state.json"
       ]
     }
   ],
-  "confidence": 0.83,
+  "confidence": 0.74,
   "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/components/sections/ArduinoCodeSection.tsx",
+    "frontend/src/components/sections/ManualSection.tsx",
+    "frontend/src/components/sections/ThresholdDiagramSection.tsx",
+    "frontend/src/siteConfig.ts",
     "project_state.json"
   ]
 }

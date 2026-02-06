@@ -11,62 +11,56 @@ interface ArduinoCodeSectionProps {
 const ArduinoCodeSection = ({ thresholdC }: ArduinoCodeSectionProps) => {
   const [copied, setCopied] = useState(false);
 
-  const arduinoCode = `#include <DHT.h>
+  const arduinoCode = `#define PIN 6
+#define TYPE DHT11
+#include <DHT.h>
 
-// Pin definitions
-#define DHTPIN 2        // DHT11 data pin connected to digital pin 2
-#define DHTTYPE DHT11   // DHT sensor type
-#define MOTORPIN 7      // Relay/Motor control pin connected to digital pin 7
+#define RELAY 8
+#define LED 12
 
-// Temperature threshold in Celsius
-const float TEMP_THRESHOLD = ${thresholdC}.0;
+DHT dht(PIN , TYPE);
 
-// Initialize DHT sensor
-DHT dht(DHTPIN, DHTTYPE);
+bool fanState = false;   // fan status memory
 
-void setup() {
-  // Initialize serial communication
+void setup()
+{
   Serial.begin(9600);
-  Serial.println("DHT11 Temperature Monitor");
-  Serial.println("Motor activates at >= ${thresholdC}°C");
-  
-  // Initialize DHT sensor
   dht.begin();
-  
-  // Set motor pin as output
-  pinMode(MOTORPIN, OUTPUT);
-  digitalWrite(MOTORPIN, LOW); // Motor off initially
+
+  pinMode(RELAY, OUTPUT);
+  pinMode(LED, OUTPUT);
+
+  digitalWrite(RELAY, HIGH); // Fan OFF initially (active LOW)
+  digitalWrite(LED, LOW);
 }
 
-void loop() {
-  // Wait 2 seconds between measurements
-  delay(2000);
-  
-  // Read temperature and humidity
-  float humidity = dht.readHumidity();
-  float temperature = dht.readTemperature();
-  
-  // Check if readings are valid
-  if (isnan(humidity) || isnan(temperature)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
+void loop()
+{
+  float t = dht.readTemperature();
+  float h = dht.readHumidity();
+
+  if (isnan(t) || isnan(h)) return;
+
+  // FAN CONTROL (27°C logic)
+  if (t >= 27 && fanState == false)
+  {
+    fanState = true;
+    digitalWrite(RELAY, LOW);   // Fan ON
+    digitalWrite(LED, HIGH);
   }
-  
-  // Print readings to Serial Monitor
+  else if (t <= 26 && fanState == true)
+  {
+    fanState = false;
+    digitalWrite(RELAY, HIGH);  // Fan OFF
+    digitalWrite(LED, LOW);
+  }
+
   Serial.print("Temperature: ");
-  Serial.print(temperature);
-  Serial.print("°C | Humidity: ");
-  Serial.print(humidity);
-  Serial.print("% | Motor: ");
-  
-  // Control motor based on temperature threshold
-  if (temperature >= TEMP_THRESHOLD) {
-    digitalWrite(MOTORPIN, HIGH); // Turn motor ON
-    Serial.println("ON");
-  } else {
-    digitalWrite(MOTORPIN, LOW);  // Turn motor OFF
-    Serial.println("OFF");
-  }
+  Serial.print(t);
+  Serial.print(" C | Fan: ");
+  Serial.println(fanState ? "ON" : "OFF");
+
+  delay(2000);
 }`;
 
   const handleCopy = async () => {
@@ -86,7 +80,7 @@ void loop() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Arduino Code</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Complete Arduino sketch for the DHT11 temperature monitor with {thresholdC}°C threshold
+              Complete Arduino sketch for the DHT11 temperature monitor with hysteresis control (27°C ON / 26°C OFF)
             </p>
           </div>
 
@@ -96,10 +90,10 @@ void loop() {
                 <div className="flex-1">
                   <CardTitle className="flex items-center gap-2 mb-2">
                     <Code className="h-5 w-5 text-primary" />
-                    DHT11_Motor_Control.ino
+                    DHT11_Fan_Control.ino
                   </CardTitle>
                   <CardDescription>
-                    Upload this code to your Arduino board. Temperature threshold is set to {thresholdC}°C.
+                    Upload this code to your Arduino board. Fan turns ON at 27°C and OFF at 26°C with hysteresis to prevent rapid cycling.
                   </CardDescription>
                 </div>
                 <Button
@@ -126,7 +120,9 @@ void loop() {
               <div className="mb-4 flex flex-wrap gap-2">
                 <Badge variant="secondary">Arduino C/C++</Badge>
                 <Badge variant="secondary">DHT Library Required</Badge>
-                <Badge variant="outline">Threshold: {thresholdC}°C</Badge>
+                <Badge variant="outline">DHT11 Pin 6</Badge>
+                <Badge variant="outline">Relay Pin 8 (Active LOW)</Badge>
+                <Badge variant="outline">LED Pin 12</Badge>
               </div>
               
               <div className="relative">
@@ -151,11 +147,11 @@ void loop() {
               <div className="mt-4 p-4 bg-accent/5 border border-accent/20 rounded-lg">
                 <h4 className="font-semibold mb-2 text-sm">How It Works:</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Reads temperature from DHT11 sensor every 2 seconds</li>
-                  <li>• Compares temperature to threshold ({thresholdC}°C)</li>
-                  <li>• If temperature ≥ {thresholdC}°C: Sets pin 7 HIGH (motor ON)</li>
-                  <li>• If temperature &lt; {thresholdC}°C: Sets pin 7 LOW (motor OFF)</li>
-                  <li>• Prints readings to Serial Monitor for debugging</li>
+                  <li>• Reads temperature and humidity from DHT11 sensor on pin 6 every 2 seconds</li>
+                  <li>• Uses hysteresis control: Fan turns ON at 27°C and OFF at 26°C</li>
+                  <li>• Relay on pin 8 is active LOW (HIGH = OFF, LOW = ON)</li>
+                  <li>• LED indicator on pin 12 shows fan status (HIGH = ON, LOW = OFF)</li>
+                  <li>• Prints temperature readings and fan status to Serial Monitor for debugging</li>
                 </ul>
               </div>
             </CardContent>

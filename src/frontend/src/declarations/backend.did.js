@@ -8,6 +8,12 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 export const Contact = IDL.Record({
   'submitter' : IDL.Opt(IDL.Principal),
   'name' : IDL.Text,
@@ -17,13 +23,31 @@ export const Contact = IDL.Record({
 });
 
 export const idlService = IDL.Service({
-  'getAllContacts' : IDL.Func([], [IDL.Vec(Contact)], ['query']),
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getContactCount' : IDL.Func([], [IDL.Nat], ['query']),
+  'getContacts' : IDL.Func([IDL.Nat, IDL.Nat], [IDL.Vec(Contact)], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'submitContact' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
   const Contact = IDL.Record({
     'submitter' : IDL.Opt(IDL.Principal),
     'name' : IDL.Text,
@@ -33,7 +57,19 @@ export const idlFactory = ({ IDL }) => {
   });
   
   return IDL.Service({
-    'getAllContacts' : IDL.Func([], [IDL.Vec(Contact)], ['query']),
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getContactCount' : IDL.Func([], [IDL.Nat], ['query']),
+    'getContacts' : IDL.Func([IDL.Nat, IDL.Nat], [IDL.Vec(Contact)], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'submitContact' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
   });
 };

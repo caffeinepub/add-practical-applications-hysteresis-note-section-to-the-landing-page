@@ -11,8 +11,16 @@ interface ThresholdDiagramSectionProps {
 const ThresholdDiagramSection = ({ thresholdC }: ThresholdDiagramSectionProps) => {
   const [temperature, setTemperature] = useState(25);
   const [isSimulating, setIsSimulating] = useState(true);
+  const [fanState, setFanState] = useState(false);
 
-  const isMotorOn = temperature >= thresholdC;
+  // Hysteresis logic: ON at 27°C, OFF at 26°C
+  useEffect(() => {
+    if (temperature >= 27 && !fanState) {
+      setFanState(true);
+    } else if (temperature <= 26 && fanState) {
+      setFanState(false);
+    }
+  }, [temperature, fanState]);
 
   useEffect(() => {
     if (!isSimulating) return;
@@ -40,7 +48,7 @@ const ThresholdDiagramSection = ({ thresholdC }: ThresholdDiagramSectionProps) =
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Interactive Simulation</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Watch how the motor/fan responds to temperature changes in real-time
+              Watch how the motor/fan responds to temperature changes with hysteresis control
             </p>
           </div>
 
@@ -51,7 +59,7 @@ const ThresholdDiagramSection = ({ thresholdC }: ThresholdDiagramSectionProps) =
                 DHT11 Temperature Monitor
               </CardTitle>
               <CardDescription>
-                Threshold: {thresholdC}°C | Motor turns ON when temperature ≥ {thresholdC}°C
+                Hysteresis Control: Fan turns ON at 27°C and OFF at 26°C
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6 md:p-8">
@@ -59,7 +67,7 @@ const ThresholdDiagramSection = ({ thresholdC }: ThresholdDiagramSectionProps) =
                 {/* Temperature Display */}
                 <div className="flex flex-col items-center justify-center p-6 bg-muted/50 rounded-lg">
                   <div className="text-sm font-medium text-muted-foreground mb-2">Current Temperature</div>
-                  <div className="text-6xl font-bold mb-4" style={{ color: temperature >= thresholdC ? 'oklch(0.65 0.25 25)' : 'oklch(0.60 0.20 240)' }}>
+                  <div className="text-6xl font-bold mb-4" style={{ color: fanState ? 'oklch(0.65 0.25 25)' : 'oklch(0.60 0.20 240)' }}>
                     {temperature.toFixed(1)}°C
                   </div>
                   <div className="w-full max-w-xs h-4 bg-background rounded-full overflow-hidden">
@@ -67,7 +75,7 @@ const ThresholdDiagramSection = ({ thresholdC }: ThresholdDiagramSectionProps) =
                       className="h-full transition-all duration-500 rounded-full"
                       style={{ 
                         width: `${((temperature - 20) / 15) * 100}%`,
-                        background: temperature >= thresholdC 
+                        background: fanState 
                           ? 'linear-gradient(90deg, oklch(0.75 0.20 60), oklch(0.65 0.25 25))' 
                           : 'linear-gradient(90deg, oklch(0.70 0.15 240), oklch(0.60 0.20 200))'
                       }}
@@ -85,21 +93,21 @@ const ThresholdDiagramSection = ({ thresholdC }: ThresholdDiagramSectionProps) =
                   <div className="relative mb-4">
                     <Fan 
                       className={`h-24 w-24 transition-all duration-300 ${
-                        isMotorOn ? 'text-primary animate-spin' : 'text-muted-foreground'
+                        fanState ? 'text-primary animate-spin' : 'text-muted-foreground'
                       }`}
-                      style={{ animationDuration: isMotorOn ? '1s' : 'none' }}
+                      style={{ animationDuration: fanState ? '1s' : 'none' }}
                     />
                   </div>
                   <Badge 
-                    variant={isMotorOn ? 'default' : 'secondary'}
+                    variant={fanState ? 'default' : 'secondary'}
                     className="text-lg px-4 py-2"
                   >
-                    {isMotorOn ? 'ON' : 'OFF'}
+                    {fanState ? 'ON' : 'OFF'}
                   </Badge>
                   <div className="mt-4 text-center text-sm text-muted-foreground">
-                    {isMotorOn 
-                      ? `Temperature ≥ ${thresholdC}°C: Motor is running`
-                      : `Temperature < ${thresholdC}°C: Motor is off`
+                    {fanState 
+                      ? `Fan is running (turned ON at ≥27°C)`
+                      : `Fan is off (will turn OFF at ≤26°C)`
                     }
                   </div>
                 </div>
@@ -129,10 +137,12 @@ const ThresholdDiagramSection = ({ thresholdC }: ThresholdDiagramSectionProps) =
 
               {/* Logic Explanation */}
               <div className="mt-8 p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                <h4 className="font-semibold mb-2 text-sm">Control Logic:</h4>
+                <h4 className="font-semibold mb-2 text-sm">Hysteresis Control Logic:</h4>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• If temperature ≥ {thresholdC}°C → Motor turns <strong>ON</strong></li>
-                  <li>• If temperature &lt; {thresholdC}°C → Motor turns <strong>OFF</strong></li>
+                  <li>• If temperature ≥ 27°C and fan is OFF → Fan turns <strong>ON</strong></li>
+                  <li>• If temperature ≤ 26°C and fan is ON → Fan turns <strong>OFF</strong></li>
+                  <li>• Between 26°C and 27°C → Fan maintains its current state</li>
+                  <li>• This prevents rapid on/off cycling and extends component life</li>
                 </ul>
               </div>
             </CardContent>

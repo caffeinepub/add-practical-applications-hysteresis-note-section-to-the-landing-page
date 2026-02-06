@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 17,
-  "summary": "ICP dapp scaffold with Motoko backend canister and Vite/React/Tailwind frontend, including a marketing-style landing page, Internet Identity authentication hooks, and a contact submission flow.",
+  "projectStateVersion": 27,
+  "summary": "ICP dapp scaffold with Motoko backend canister and Vite/React/Tailwind frontend, including a marketing-style landing page (with Demo & Media section removed), Internet Identity authentication hooks, and a contact submission flow.",
   "architectural_notes": [
     "Frontend uses generated Candid bindings and an actor creation hook to call the Motoko backend.",
     "Authentication is designed around Internet Identity; unauthenticated vs authenticated actor usage is encapsulated in hooks/utilities.",
@@ -9,10 +9,9 @@
     "Landing page content is organized as discrete section components, allowing additional documentation-style sections (e.g., manual/code/diagrams) to be added without restructuring the overall app shell."
   ],
   "known_issues": [
-    "Demo Media section image fails to open/load in production; user requested the image be re-added.",
-    "Demo Media section image still does not load after re-adding; likely deployed asset path/base URL mismatch remains."
+    "Deployment/build process is currently failing with an unspecified deployment error (snag during deployment)."
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "generatedImages": [
     {
       "filename": "frontend/public/assets/generated/feature-icons-set.dim_768x256.png",
@@ -203,6 +202,70 @@
         "REQ-10"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-remove-the-demo-media-section-from-the-landing-page-rendering-so-it-no-longer-appears-in-the-ui",
+      "title": "Remove the “Demo & Media” section from the landing page rendering so it no longer appears in the UI.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-demo-media-configuration-entries-from-frontend-src-siteconfig-ts-so-the-site-configuration-no-longer-defines-or-requires-media-content",
+      "title": "Remove the Demo & Media configuration entries from `frontend/src/siteConfig.ts` so the site configuration no longer defines or requires `media` content.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-arduino-sketch-shown-in-frontend-src-components-sections-arduinocodesection-tsx-with-the-user-provided-dht11-relay-led-fan-control-code-including-the-27-c-on-26-c-off-hysteresis-logic-and-active-low-relay-behavior",
+      "title": "Replace the Arduino sketch shown in `frontend/src/components/sections/ArduinoCodeSection.tsx` with the user-provided DHT11 + relay + LED fan control code, including the 27°C ON / 26°C OFF hysteresis logic and active-LOW relay behavior.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-arduino-code-section-s-user-facing-labels-help-text-title-subtitle-filename-label-badges-and-how-it-works-bullets-to-accurately-describe-the-provided-sketch-dht11-on-pin-6-relay-controlled-fan-on-pin-8-active-low-led-indicator-on-pin-12-2-second-sampling-and-hysteresis-27-c-on-26-c-off-use-english-for-all-user-facing-text",
+      "title": "Update the Arduino Code section’s user-facing labels/help text (title/subtitle, filename label, badges, and “How It Works” bullets) to accurately describe the provided sketch: DHT11 on pin 6, relay-controlled fan on pin 8 (active LOW), LED indicator on pin 12, 2-second sampling, and hysteresis (27°C ON / 26°C OFF). Use English for all user-facing text.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-frontend-src-siteconfig-ts-copy-that-currently-states-a-28-c-threshold-so-the-site-text-reflects-the-new-fan-control-logic-27-c-on-26-c-off-wherever-the-temperature-threshold-is-described-and-set-temperaturethresholdc-to-27-so-configuration-stays-consistent-with-the-displayed-arduino-sketch",
+      "title": "Update `frontend/src/siteConfig.ts` copy that currently states a 28°C threshold so the site text reflects the new fan-control logic (27°C ON / 26°C OFF) wherever the temperature threshold is described, and set `temperatureThresholdC` to 27 so configuration stays consistent with the displayed Arduino sketch.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-arduino-sketch-displayed-in-frontend-src-components-sections-arduinocodesection-tsx-with-the-exact-user-provided-code-dht11-on-pin-6-relay-on-pin-8-active-low-led-on-pin-12-2-second-sampling-fanstate-memory-27-c-on-26-c-off-hysteresis",
+      "title": "Replace the Arduino sketch displayed in `frontend/src/components/sections/ArduinoCodeSection.tsx` with the exact user-provided code (DHT11 on pin 6, relay on pin 8 active-LOW, LED on pin 12, 2-second sampling, fanState memory, 27°C ON / 26°C OFF hysteresis).",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-all-arduino-code-section-user-facing-text-in-frontend-src-components-sections-arduinocodesection-tsx-to-accurately-describe-the-provided-sketch-dht11-on-pin-6-relay-controlled-fan-on-pin-8-active-low-led-indicator-on-pin-12-2-second-sampling-and-hysteresis-27-c-on-26-c-off-ensure-all-user-facing-text-is-english",
+      "title": "Update all Arduino Code section user-facing text in `frontend/src/components/sections/ArduinoCodeSection.tsx` to accurately describe the provided sketch (DHT11 on pin 6, relay-controlled fan on pin 8 active LOW, LED indicator on pin 12, 2-second sampling, and hysteresis 27°C ON / 26°C OFF). Ensure all user-facing text is English.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-frontend-src-siteconfig-ts-to-keep-site-configuration-and-marketing-copy-consistent-with-the-new-fan-control-logic-set-temperaturethresholdc-to-27-and-update-any-copy-that-states-a-28-c-threshold-to-reflect-the-27-c-on-26-c-off-hysteresis-behavior-including-overview-features-seo-strings-where-applicable",
+      "title": "Update `frontend/src/siteConfig.ts` to keep site configuration and marketing copy consistent with the new fan-control logic: set `temperatureThresholdC` to 27, and update any copy that states a 28°C threshold to reflect the 27°C ON / 26°C OFF hysteresis behavior (including overview/features/SEO strings where applicable).",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -213,8 +276,58 @@
       "status": "pending"
     },
     {
-      "id": "AR-2",
-      "summary": "Add the provided image to the existing Demo Media / Demo and Media section on the landing page.",
+      "id": "AR-3",
+      "summary": "Remove the Demo & Media section from the landing page (and remove its navigation/footer links and related siteConfig entries).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Update/replace the Arduino example code in the landing-page documentation (Arduino Code section / siteConfig content) to use the provided DHT11 + relay + LED fan control sketch with 27°C ON / 26°C OFF hysteresis logic.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Proceed with backend development for the ICP Motoko canister (beyond the current scaffold), implementing required backend functionality to support the app.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Update the Motoko canister in `backend/main.mo` to persist contact submissions across upgrades by storing submissions in stable state (instead of only in-memory structures).",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add authorization to protect contact-submission retrieval so that bulk access to all contact submissions is restricted (e.g., admin-only), while keeping the public contact submission endpoint usable for the existing contact form flow.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Improve backend robustness for the contact submission flow in `backend/main.mo` by implementing bounded storage and safer rate limiting to prevent unbounded growth and abuse.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Add backend retrieval APIs suitable for UI/admin use without downloading the entire dataset at once (e.g., pagination and count).",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Update the contact form flow so contact submissions are forwarded/sent to the user’s email address (configure destination email for messages).",
       "reqIds": [],
       "status": "pending"
     }

@@ -2,18 +2,59 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-the-newly-uploaded-image-file-whatsapp-image-2026-02-06-at-9-23-49-am-1-jpeg-to-the-frontend-static-assets-and-ensure-the-demo-media-section-loads-it-correctly-in-production-by-matching-the-exact-path-referenced-by-frontend-src-siteconfig-ts-media-images-currently-includes-assets-whatsapp-image-2026-02-06-092349-jpeg-if-necessary-rename-copy-the-uploaded-image-to-frontend-public-assets-whatsapp-image-2026-02-06-092349-jpeg-so-the-deployed-build-contains-the-asset-at-that-path",
-      "featureTitle": "Add the newly uploaded image file \"WhatsApp Image 2026-02-06 at 9.23.49 AM-1.jpeg\" to the frontend static assets and ensure the Demo & Media section loads it correctly in production by matching the exact path referenced by `frontend/src/siteConfig.ts` (`media.images` currently includes `assets/whatsapp-image-2026-02-06-092349.jpeg`). If necessary, rename/copy the uploaded image to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` so the deployed build contains the asset at that path.",
-      "files": [],
+      "featureId": "feature-replace-the-arduino-sketch-displayed-in-frontend-src-components-sections-arduinocodesection-tsx-with-the-exact-user-provided-code-dht11-on-pin-6-relay-on-pin-8-active-low-led-on-pin-12-2-second-sampling-fanstate-memory-27-c-on-26-c-off-hysteresis",
+      "featureTitle": "Replace the Arduino sketch displayed in `frontend/src/components/sections/ArduinoCodeSection.tsx` with the exact user-provided code (DHT11 on pin 6, relay on pin 8 active-LOW, LED on pin 12, 2-second sampling, fanState memory, 27°C ON / 26°C OFF hysteresis).",
+      "files": [
+        "frontend/src/components/sections/ArduinoCodeSection.tsx"
+      ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-10"
+        "REQ-20"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-all-arduino-code-section-user-facing-text-in-frontend-src-components-sections-arduinocodesection-tsx-to-accurately-describe-the-provided-sketch-dht11-on-pin-6-relay-controlled-fan-on-pin-8-active-low-led-indicator-on-pin-12-2-second-sampling-and-hysteresis-27-c-on-26-c-off-ensure-all-user-facing-text-is-english",
+      "featureTitle": "Update all Arduino Code section user-facing text in `frontend/src/components/sections/ArduinoCodeSection.tsx` to accurately describe the provided sketch (DHT11 on pin 6, relay-controlled fan on pin 8 active LOW, LED indicator on pin 12, 2-second sampling, and hysteresis 27°C ON / 26°C OFF). Ensure all user-facing text is English.",
+      "files": [
+        "frontend/src/components/sections/ArduinoCodeSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-21"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-frontend-src-siteconfig-ts-to-keep-site-configuration-and-marketing-copy-consistent-with-the-new-fan-control-logic-set-temperaturethresholdc-to-27-and-update-any-copy-that-states-a-28-c-threshold-to-reflect-the-27-c-on-26-c-off-hysteresis-behavior-including-overview-features-seo-strings-where-applicable",
+      "featureTitle": "Update `frontend/src/siteConfig.ts` to keep site configuration and marketing copy consistent with the new fan-control logic: set `temperatureThresholdC` to 27, and update any copy that states a 28°C threshold to reflect the 27°C ON / 26°C OFF hysteresis behavior (including overview/features/SEO strings where applicable).",
+      "files": [
+        "frontend/src/siteConfig.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-22"
       ],
       "confidence": "high"
     }

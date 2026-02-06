@@ -14,7 +14,22 @@ export interface Contact {
     message: string;
     timestamp: bigint;
 }
+export interface UserProfile {
+    name: string;
+}
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
+}
 export interface backendInterface {
-    getAllContacts(): Promise<Array<Contact>>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
+    getContactCount(): Promise<bigint>;
+    getContacts(page: bigint, pageSize: bigint): Promise<Array<Contact>>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    isCallerAdmin(): Promise<boolean>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
     submitContact(name: string, email: string, message: string): Promise<void>;
 }

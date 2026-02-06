@@ -25,10 +25,6 @@ export interface SiteConfig {
   applications: Application[];
   hysteresisNote: HysteresisNote;
   techStack: string[];
-  media: {
-    videoUrl?: string;
-    images?: string[];
-  };
   ctaLinks: {
     primary?: { label: string; url: string };
     secondary?: { label: string; url: string };
@@ -51,17 +47,17 @@ export const siteConfig: SiteConfig = {
   tagline: 'Arduino-based temperature control with automatic motor/fan activation',
   overview: 
     'This Arduino project uses a DHT11 sensor to monitor temperature and humidity in real-time. ' +
-    'When the temperature reaches or exceeds 28°C, the system automatically activates a motor or fan to provide cooling. ' +
-    'The motor turns off when the temperature drops below 28°C, creating an efficient automated climate control solution. ' +
-    'Perfect for learning about sensors, actuators, and basic automation with Arduino.',
+    'When the temperature reaches 27°C, the system automatically activates a motor or fan to provide cooling. ' +
+    'The motor turns off when the temperature drops to 26°C, using hysteresis to prevent rapid on/off cycling. ' +
+    'Perfect for learning about sensors, actuators, and smart automation with Arduino.',
   features: [
     {
       title: 'DHT11 Temperature & Humidity Sensor',
       description: 'Accurate real-time monitoring of environmental conditions with the reliable DHT11 sensor.',
     },
     {
-      title: 'Automatic Motor/Fan Control',
-      description: 'Motor or fan automatically turns ON when temperature >= 28°C and OFF when temperature < 28°C.',
+      title: 'Smart Hysteresis Control',
+      description: 'Fan automatically turns ON at 27°C and OFF at 26°C, preventing rapid cycling and extending component life.',
     },
     {
       title: 'Simple Arduino Setup',
@@ -73,8 +69,9 @@ export const siteConfig: SiteConfig = {
       title: 'The "Smart Sleep" Comfort System',
       scenario: 'Sleeping with a fan on full blast can leave you freezing by 3 AM, but turning it off makes you wake up sweating.',
       logic: [
-        'If Temp > 28°C: Fan speed High (or Relay ON).',
-        'If Temp drops below 24°C: Fan turns OFF (or switches to a lower speed if using a PWM controller).',
+        'If Temp ≥ 27°C: Fan turns ON.',
+        'If Temp drops to 26°C: Fan turns OFF.',
+        'Hysteresis prevents the fan from cycling rapidly around the threshold.',
       ],
       dailyBenefit: 'Ensures uninterrupted sleep without needing to wake up to adjust the switch.',
       icon: 'fan',
@@ -123,8 +120,8 @@ export const siteConfig: SiteConfig = {
   hysteresisNote: {
     title: 'Technical Note on "Hysteresis"',
     description: 'For any of these "Live Day" applications to be annoying-free, ensure your code uses hysteresis.',
-    badExample: 'Turn fan ON at 30.0°C and OFF at 29.9°C. (The fan will click on/off rapidly).',
-    goodExample: 'Turn fan ON at 30°C and wait until it drops to 28°C to turn it OFF.',
+    badExample: 'Turn fan ON at 27.0°C and OFF at 26.9°C. (The fan will click on/off rapidly).',
+    goodExample: 'Turn fan ON at 27°C and wait until it drops to 26°C to turn it OFF.',
   },
   techStack: [
     'Arduino',
@@ -133,10 +130,6 @@ export const siteConfig: SiteConfig = {
     'C/C++',
     'Digital I/O',
   ],
-  media: {
-    videoUrl: '',
-    images: ['assets/whatsapp-image-2026-02-06-092349.jpeg'],
-  },
   ctaLinks: {
     primary: {
       label: 'View Simulation',
@@ -167,9 +160,9 @@ export const siteConfig: SiteConfig = {
   ],
   seo: {
     title: 'DHT11 Temperature Monitor - Arduino Project',
-    description: 'Arduino-based temperature monitoring system with DHT11 sensor and automatic motor/fan control at 28°C threshold.',
+    description: 'Arduino-based temperature monitoring system with DHT11 sensor and automatic motor/fan control with 27°C ON / 26°C OFF hysteresis.',
     ogTitle: 'DHT11 Temperature Monitor - Arduino Project',
-    ogDescription: 'Arduino-based temperature monitoring system with DHT11 sensor and automatic motor/fan control at 28°C threshold.',
+    ogDescription: 'Arduino-based temperature monitoring system with DHT11 sensor and automatic motor/fan control with 27°C ON / 26°C OFF hysteresis.',
   },
-  temperatureThresholdC: 28,
+  temperatureThresholdC: 27,
 };

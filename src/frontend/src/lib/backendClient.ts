@@ -21,18 +21,3 @@ export async function submitContactForm(name: string, email: string, message: st
     throw new Error('Failed to submit contact form. Please try again later.');
   }
 }
-
-export async function getAllContacts() {
-  if (!cachedActor) {
-    throw new Error('Backend actor not initialized.');
-  }
-
-  try {
-    return await cachedActor.getAllContacts();
-  } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    }
-    throw new Error('Failed to fetch contacts.');
-  }
-}

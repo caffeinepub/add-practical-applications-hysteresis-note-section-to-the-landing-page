@@ -8,7 +8,6 @@ import ThresholdDiagramSection from './components/sections/ThresholdDiagramSecti
 import PracticalApplicationsSection from './components/sections/PracticalApplicationsSection';
 import ManualSection from './components/sections/ManualSection';
 import ArduinoCodeSection from './components/sections/ArduinoCodeSection';
-import DemoMediaSection from './components/sections/DemoMediaSection';
 import TechStackSection from './components/sections/TechStackSection';
 import ContactSection from './components/sections/ContactSection';
 import Footer from './components/Footer';
@@ -78,7 +77,6 @@ function App() {
         />
         <ManualSection thresholdC={siteConfig.temperatureThresholdC} />
         <ArduinoCodeSection thresholdC={siteConfig.temperatureThresholdC} />
-        <DemoMediaSection media={siteConfig.media} />
         <TechStackSection techStack={siteConfig.techStack} />
         <ContactSection />
       </main>

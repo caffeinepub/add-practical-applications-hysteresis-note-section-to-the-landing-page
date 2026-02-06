@@ -1,39 +1,83 @@
 {
   "kind": "build_request",
-  "title": "Re-add uploaded Demo & Media image asset so it loads in production",
-  "priority": "high",
+  "title": "Update Arduino Code section to the provided DHT11 + relay + LED fan control sketch (27°C/26°C hysteresis)",
+  "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-10",
-      "text": "Add the newly uploaded image file \"WhatsApp Image 2026-02-06 at 9.23.49 AM-1.jpeg\" to the frontend static assets and ensure the Demo & Media section loads it correctly in production by matching the exact path referenced by `frontend/src/siteConfig.ts` (`media.images` currently includes `assets/whatsapp-image-2026-02-06-092349.jpeg`). If necessary, rename/copy the uploaded image to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` so the deployed build contains the asset at that path.",
+      "id": "REQ-20",
+      "text": "Replace the Arduino sketch displayed in `frontend/src/components/sections/ArduinoCodeSection.tsx` with the exact user-provided code (DHT11 on pin 6, relay on pin 8 active-LOW, LED on pin 12, 2-second sampling, fanState memory, 27°C ON / 26°C OFF hysteresis).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "recent-messages"
+          "msg-12"
         ],
         "quotes": [
-          "re add it again",
-          "The user has uploaded 1 image(s): WhatsApp Image 2026-02-06 at 9.23.49 AM-1.jpeg."
+          "#define PIN 6\n#define TYPE DHT11\n#include <DHT.h>\n\n#define RELAY 8\n#define LED 12\n\nDHT dht(PIN , TYPE);\n\nbool fanState = false;   // fan status memory\n\nvoid setup()\n{\n  Serial.begin(9600);\n  dht.begin();\n\n  pinMode(RELAY, OUTPUT);\n  pinMode(LED, OUTPUT);\n\n  digitalWrite(RELAY, HIGH); // Fan OFF initially (active LOW)\n  digitalWrite(LED, LOW);\n}\n\nvoid loop()\n{\n  float t = dht.readTemperature();\n  float h = dht.readHumidity();\n\n  if (isnan(t) || isnan(h)) return;\n\n  // FAN CONTROL (27°C logic)\n  if (t >= 27 && fanState == false)\n  {\n    fanState = true;\n    digitalWrite(RELAY, LOW);   // Fan ON\n    digitalWrite(LED, HIGH);\n  }\n  else if (t <= 26 && fanState == true)\n  {\n    fanState = false;\n    digitalWrite(RELAY, HIGH);  // Fan OFF\n    digitalWrite(LED, LOW);\n  }\n\n  Serial.print(\"Temperature: \");\n  Serial.print(t);\n  Serial.print(\" C | Fan: \");\n  Serial.println(fanState ? \"ON\" : \"OFF\");\n\n  delay(2000);\n}    add this code"
         ]
       },
       "acceptanceCriteria": [
-        "The repository contains `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` (from the uploaded image, either via rename or copy).",
-        "In `frontend/src/siteConfig.ts`, `siteConfig.media.images` continues to reference a path that exists in `frontend/public` at build time (either unchanged if `assets/whatsapp-image-2026-02-06-092349.jpeg` is created, or updated to the actual shipped filename).",
-        "When the app is built and deployed under a non-root base path, the Demo & Media image renders without triggering the \"Image failed to load\" fallback in `frontend/src/components/sections/DemoMediaSection.tsx`.",
-        "Clicking the image opens the full-size image in a new tab (existing behavior remains working)."
+        "The code block shown in the Arduino Code section matches the user-provided sketch exactly (including pin numbers, active-LOW relay behavior, hysteresis conditions, and delay(2000)).",
+        "Copy-to-clipboard copies the updated sketch content exactly.",
+        "The Arduino Code section does not interpolate `thresholdC` into the sketch in a way that changes the provided code."
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "text": "Update all Arduino Code section user-facing text in `frontend/src/components/sections/ArduinoCodeSection.tsx` to accurately describe the provided sketch (DHT11 on pin 6, relay-controlled fan on pin 8 active LOW, LED indicator on pin 12, 2-second sampling, and hysteresis 27°C ON / 26°C OFF). Ensure all user-facing text is English.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "add this code"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Section title/subtitle, filename label, badges, and “How It Works” bullets describe: DHT11 pin 6, relay pin 8 (active LOW), LED pin 12, 2-second sampling, and hysteresis 27°C ON / 26°C OFF.",
+        "No user-facing text in this section mentions the old pin numbers (2/7) or the old single-threshold logic.",
+        "All user-facing strings in this section are English."
+      ]
+    },
+    {
+      "id": "REQ-22",
+      "text": "Update `frontend/src/siteConfig.ts` to keep site configuration and marketing copy consistent with the new fan-control logic: set `temperatureThresholdC` to 27, and update any copy that states a 28°C threshold to reflect the 27°C ON / 26°C OFF hysteresis behavior (including overview/features/SEO strings where applicable).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-12"
+        ],
+        "quotes": [
+          "// FAN CONTROL (27°C logic)\n  if (t >= 27 && fanState == false)\n...\n  else if (t <= 26 && fanState == true)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "`siteConfig.temperatureThresholdC` equals 27.",
+        "No `siteConfig` marketing copy or SEO strings claim activation at 28°C; copy reflects 27°C ON / 26°C OFF hysteresis.",
+        "The app renders without TypeScript errors after the copy/config updates."
       ]
     }
   ],
   "constraints": [
-    "Frontend immutable paths must not be edited: `frontend/src/hooks/useInternetIdentity.ts`, `frontend/src/hooks/useInternetIdentity.tsx`, `frontend/src/hooks/useActor.ts`, `frontend/src/main.tsx`, `frontend/src/components/ui`.",
-    "Keep backend as a single-actor Motoko canister; no backend changes are required for this request."
+    "Do not modify files under `frontend/src/components/ui` (compose existing components instead).",
+    "Do not edit immutable frontend hook/bootstrapping paths listed in SYSTEM_CONTEXT."
   ],
   "nonGoals": [
-    "No changes to the contact form flow or Motoko backend logic.",
-    "No new landing-page sections or navigation changes beyond what is required to make the demo image load."
+    "Add email forwarding for the contact form (requires an enabled Email feature and additional setup).",
+    "Backend changes to Motoko canister behavior."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

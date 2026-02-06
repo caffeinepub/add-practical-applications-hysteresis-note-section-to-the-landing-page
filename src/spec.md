@@ -1,11 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Ensure the Demo & Media section image asset is included in the frontend build and loads correctly in production.
+**Goal:** Update the Arduino Code section and site copy/config to match the provided DHT11 + relay + LED fan control sketch with 27°C ON / 26°C OFF hysteresis.
 
 **Planned changes:**
-- Add the uploaded image file to the frontend static assets so it is shipped with production builds.
-- Ensure the shipped filename/path matches what `frontend/src/siteConfig.ts` references (currently `assets/whatsapp-image-2026-02-06-092349.jpeg`), by renaming/copying the uploaded file to `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg` or updating the config to the actual shipped filename.
-- Verify the Demo & Media section renders the image under non-root base paths without triggering the “Image failed to load” fallback, and that clicking still opens the full-size image in a new tab.
+- Replace the code shown in `frontend/src/components/sections/ArduinoCodeSection.tsx` with the exact user-provided Arduino sketch (DHT11 pin 6, relay pin 8 active-LOW, LED pin 12, fanState memory, 27/26 hysteresis, 2-second delay).
+- Update all Arduino Code section user-facing English text (title/subtitle/labels/badges/how-it-works) to describe the new pins, active-LOW relay behavior, 2-second sampling, and 27°C ON / 26°C OFF hysteresis.
+- Update `frontend/src/siteConfig.ts` to set `temperatureThresholdC` to 27 and revise any marketing/SEO/feature copy that mentions 28°C to reflect the 27°C ON / 26°C OFF hysteresis behavior.
 
-**User-visible outcome:** The Demo & Media image reliably displays in deployed environments (including non-root base paths), and users can click it to view the full-size image in a new tab.
+**User-visible outcome:** The Arduino Code section displays and copies the new sketch exactly, and the app’s configuration and marketing text consistently describe fan activation at 27°C with 26°C turn-off hysteresis.

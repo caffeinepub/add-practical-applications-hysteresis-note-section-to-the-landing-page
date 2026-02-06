@@ -43,7 +43,11 @@ const ManualSection = ({ thresholdC }: ManualSectionProps) => {
                   </li>
                   <li className="flex items-center gap-2">
                     <Badge variant="outline">1x</Badge>
-                    <span>Relay Module (5V)</span>
+                    <span>Relay Module (5V, Active LOW)</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Badge variant="outline">1x</Badge>
+                    <span>LED (any color)</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Badge variant="outline">1x</Badge>
@@ -73,15 +77,23 @@ const ManualSection = ({ thresholdC }: ManualSectionProps) => {
                     <ul className="space-y-1 text-sm text-muted-foreground ml-4">
                       <li>• VCC → Arduino 5V</li>
                       <li>• GND → Arduino GND</li>
-                      <li>• DATA → Arduino Digital Pin 2</li>
+                      <li>• DATA → Arduino Digital Pin 6</li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Relay Module:</h4>
+                    <h4 className="font-semibold mb-2">Relay Module (Active LOW):</h4>
                     <ul className="space-y-1 text-sm text-muted-foreground ml-4">
                       <li>• VCC → Arduino 5V</li>
                       <li>• GND → Arduino GND</li>
-                      <li>• IN → Arduino Digital Pin 7</li>
+                      <li>• IN → Arduino Digital Pin 8</li>
+                      <li>• Note: HIGH = Fan OFF, LOW = Fan ON</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">LED Indicator:</h4>
+                    <ul className="space-y-1 text-sm text-muted-foreground ml-4">
+                      <li>• Anode (+) → Arduino Digital Pin 12 (through 220Ω resistor)</li>
+                      <li>• Cathode (-) → Arduino GND</li>
                     </ul>
                   </div>
                   <div>
@@ -102,14 +114,14 @@ const ManualSection = ({ thresholdC }: ManualSectionProps) => {
                   <Play className="h-5 w-5 text-primary" />
                   Operation
                 </CardTitle>
-                <CardDescription>How the system works</CardDescription>
+                <CardDescription>How the system works with hysteresis control</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                    <h4 className="font-semibold mb-2">Temperature Threshold: {thresholdC}°C</h4>
+                    <h4 className="font-semibold mb-2">Hysteresis Control: 27°C ON / 26°C OFF</h4>
                     <p className="text-sm text-muted-foreground">
-                      The system continuously monitors the temperature using the DHT11 sensor.
+                      The system continuously monitors temperature every 2 seconds using the DHT11 sensor and uses hysteresis to prevent rapid on/off cycling.
                     </p>
                   </div>
                   <div>
@@ -117,11 +129,15 @@ const ManualSection = ({ thresholdC }: ManualSectionProps) => {
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       <li className="flex items-start gap-2">
                         <Badge className="mt-0.5">ON</Badge>
-                        <span>When temperature ≥ {thresholdC}°C, the relay activates and the motor/fan turns <strong>ON</strong> to provide cooling.</span>
+                        <span>When temperature ≥ 27°C, the relay activates (pin 8 goes LOW), the motor/fan turns <strong>ON</strong>, and the LED lights up to provide cooling.</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <Badge variant="secondary" className="mt-0.5">OFF</Badge>
-                        <span>When temperature &lt; {thresholdC}°C, the relay deactivates and the motor/fan turns <strong>OFF</strong> to save energy.</span>
+                        <span>When temperature ≤ 26°C, the relay deactivates (pin 8 goes HIGH), the motor/fan turns <strong>OFF</strong>, and the LED turns off to save energy.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Badge variant="outline" className="mt-0.5">Hysteresis</Badge>
+                        <span>Between 26°C and 27°C, the fan maintains its previous state, preventing rapid cycling and extending component life.</span>
                       </li>
                     </ul>
                   </div>
@@ -131,8 +147,9 @@ const ManualSection = ({ thresholdC }: ManualSectionProps) => {
                       <li>Wire all components according to the wiring diagram above</li>
                       <li>Install the DHT sensor library in Arduino IDE</li>
                       <li>Upload the Arduino code to your board</li>
-                      <li>Open Serial Monitor (9600 baud) to view temperature readings</li>
-                      <li>Test by heating the DHT11 sensor (e.g., with your hand)</li>
+                      <li>Open Serial Monitor (9600 baud) to view temperature readings and fan status</li>
+                      <li>Test by heating the DHT11 sensor (e.g., with your hand or a heat source)</li>
+                      <li>Observe the LED indicator and fan behavior as temperature changes</li>
                     </ol>
                   </div>
                 </div>
@@ -152,6 +169,7 @@ const ManualSection = ({ thresholdC }: ManualSectionProps) => {
                   <li>• Always disconnect power before wiring or modifying connections</li>
                   <li>• Use appropriate power supply for your motor/fan</li>
                   <li>• Ensure relay is rated for your motor's voltage and current</li>
+                  <li>• Verify relay polarity: Active LOW means HIGH = OFF, LOW = ON</li>
                   <li>• Keep water away from electronic components</li>
                   <li>• Supervise the system during initial testing</li>
                 </ul>

@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSubmitContact } from '@/hooks/useSubmitContact';
+import { useActorCache } from '@/hooks/useQueries';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const ContactSection = () => {
@@ -14,6 +15,9 @@ const ContactSection = () => {
     message: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Ensure actor is cached for submission
+  useActorCache();
 
   const { submitContact, isLoading, isSuccess, isError, error } = useSubmitContact();
 
