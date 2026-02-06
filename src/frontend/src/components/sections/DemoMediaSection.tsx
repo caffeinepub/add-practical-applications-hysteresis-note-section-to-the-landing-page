@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { resolveAppUrl } from '@/lib/resolveAppUrl';
+
 interface Media {
   videoUrl?: string;
   images?: string[];
@@ -8,7 +11,13 @@ interface DemoMediaSectionProps {
 }
 
 const DemoMediaSection = ({ media }: DemoMediaSectionProps) => {
+  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
+
   const hasContent = media.videoUrl || (media.images && media.images.length > 0);
+
+  const handleImageError = (index: number) => {
+    setImageErrors((prev) => ({ ...prev, [index]: true }));
+  };
 
   if (!hasContent) {
     return (
@@ -51,15 +60,40 @@ const DemoMediaSection = ({ media }: DemoMediaSectionProps) => {
 
           {media.images && media.images.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {media.images.map((image, index) => (
-                <div key={index} className="rounded-lg overflow-hidden shadow-lg">
-                  <img
-                    src={image}
-                    alt={`Demo screenshot ${index + 1}`}
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              ))}
+              {media.images.map((image, index) => {
+                const resolvedUrl = resolveAppUrl(image);
+                const hasError = imageErrors[index];
+
+                if (hasError) {
+                  return (
+                    <div
+                      key={index}
+                      className="rounded-lg overflow-hidden shadow-lg bg-muted border border-border flex items-center justify-center min-h-[300px]"
+                    >
+                      <p className="text-muted-foreground text-center px-4">
+                        Image failed to load
+                      </p>
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={index}
+                    href={resolvedUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer block"
+                  >
+                    <img
+                      src={resolvedUrl}
+                      alt={`Demo screenshot ${index + 1}`}
+                      className="w-full h-auto object-cover"
+                      onError={() => handleImageError(index)}
+                    />
+                  </a>
+                );
+              })}
             </div>
           )}
         </div>

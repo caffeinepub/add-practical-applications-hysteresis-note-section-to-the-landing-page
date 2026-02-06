@@ -1,11 +1,11 @@
 {
   "frontend/src/App.tsx": "Main application component orchestrating all sections including the new PracticalApplicationsSection positioned after ThresholdDiagramSection, passing applications and hysteresis data from config.",
-  "frontend/src/siteConfig.ts": "Extended configuration with Application and HysteresisNote types, containing structured data for 5 practical applications and hysteresis note, plus updated media.images array to include the uploaded hardware setup photo.",
+  "frontend/src/siteConfig.ts": "Extended configuration with Application and HysteresisNote types, containing structured data for 5 practical applications and hysteresis note, plus updated media.images array using relative path (without leading slash) for base-path-safe URL resolution.",
   "frontend/src/components/TopNav.tsx": "Responsive navigation header with updated navigation items including new \"Applications\" link for smooth scrolling to the practical applications section.",
   "frontend/src/components/sections/HeroSection.tsx": "Hero section displaying project logo, name, tagline, and CTA buttons with animated entrance effects and background banner image.",
   "frontend/src/components/sections/OverviewSection.tsx": "Project overview section rendering descriptive content from config in a centered, readable layout.",
   "frontend/src/components/sections/FeaturesSection.tsx": "Features section displaying key features in a responsive card grid with hover effects and feature icon banner.",
-  "frontend/src/components/sections/DemoMediaSection.tsx": "Demo and media section supporting video embeds and image galleries with fallback for empty content.",
+  "frontend/src/components/sections/DemoMediaSection.tsx": "Demo and media section with base-path-safe URL resolution, per-image error handling with fallback UI, and clickable images that open full-size originals in new tabs.",
   "frontend/src/components/sections/TechStackSection.tsx": "Tech stack section displaying technologies as interactive badges in a centered, wrapped layout.",
   "frontend/src/components/sections/ContactSection.tsx": "Contact form section with validation, loading states, success/error feedback, and backend submission via custom hook.",
   "frontend/src/components/Footer.tsx": "Footer component with config-driven branding (project name and description passed as props) and caffeine.ai attribution with heart icon.",
@@ -19,5 +19,6 @@
   "frontend/src/components/sections/ManualSection.tsx": "Step-by-step user manual section with components list, wiring instructions, and operation guide explicitly stating 28°C threshold and >= activation logic.",
   "frontend/src/components/sections/ArduinoCodeSection.tsx": "Arduino code display section with complete DHT11 sketch using 28°C threshold, copy-to-clipboard functionality, and library installation instructions.",
   "frontend/src/components/sections/PracticalApplicationsSection.tsx": "New section component displaying 5 practical real-world applications for the DHT11 system with scenario, logic, and daily benefit, plus a hysteresis technical note with bad vs good examples using Card and Alert components.",
-  "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg": "Static asset image showing the physical DHT11 temperature and humidity monitoring system hardware setup with Arduino, breadboard, and components."
+  "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg": "Static asset image showing the physical DHT11 temperature and humidity monitoring system hardware setup with Arduino, breadboard, and components.",
+  "frontend/src/lib/resolveAppUrl.ts": "Utility function that resolves relative asset paths to full URLs using the app's base URL from Vite environment, preserving already-absolute URLs."
 }

@@ -2,9 +2,27 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-the-user-uploaded-image-whatsapp-image-2026-02-06-at-9-23-49-am-jpeg-to-the-frontend-static-assets-and-display-it-in-the-demo-media-section",
-      "featureTitle": "Add the user-uploaded image \"WhatsApp Image 2026-02-06 at 9.23.49 AM.jpeg\" to the frontend static assets and display it in the Demo & Media section.",
+      "featureId": "feature-re-add-the-user-uploaded-demo-image-asset-to-the-frontend-static-assets-so-it-is-present-in-production-and-matches-the-path-referenced-by-the-app-currently-frontend-src-siteconfig-ts-uses-assets-whatsapp-image-2026-02-06-092349-jpeg",
+      "featureTitle": "Re-add the user-uploaded demo image asset to the frontend static assets so it is present in production and matches the path referenced by the app (currently `frontend/src/siteConfig.ts` uses `/assets/whatsapp-image-2026-02-06-092349.jpeg`).",
+      "files": [],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-make-demo-media-image-urls-robust-to-the-deployed-base-path-by-resolving-siteconfig-media-images-entries-using-the-app-base-url-avoid-hard-coded-leading-paths-that-can-break-in-production",
+      "featureTitle": "Make Demo & Media image URLs robust to the deployed base path by resolving `siteConfig.media.images` entries using the app base URL (avoid hard-coded leading `/` paths that can break in production).",
       "files": [
+        "frontend/src/components/sections/DemoMediaSection.tsx",
+        "frontend/src/lib/resolveAppUrl.ts",
         "frontend/src/siteConfig.ts"
       ],
       "components": [
@@ -15,7 +33,43 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-5"
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-in-frontend-src-components-sections-demomediasection-tsx-add-a-user-friendly-fallback-when-an-image-fails-to-load-e-g-show-a-short-english-error-message-and-or-a-placeholder-block-instead-of-a-broken-image",
+      "featureTitle": "In `frontend/src/components/sections/DemoMediaSection.tsx`, add a user-friendly fallback when an image fails to load (e.g., show a short English error message and/or a placeholder block instead of a broken image).",
+      "files": [
+        "frontend/src/components/sections/DemoMediaSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-allow-users-to-open-the-demo-image-at-full-size-by-making-each-demo-media-image-clickable-open-the-original-image-url-in-a-new-tab-window",
+      "featureTitle": "Allow users to open the demo image at full size by making each Demo & Media image clickable (open the original image URL in a new tab/window).",
+      "files": [
+        "frontend/src/components/sections/DemoMediaSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
       ],
       "confidence": "high"
     }

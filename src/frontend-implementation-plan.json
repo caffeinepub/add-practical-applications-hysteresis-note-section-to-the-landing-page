@@ -1,27 +1,75 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add uploaded photo to Demo & Media section",
+  "title": "Fix Demo & Media image asset inclusion, base-path-safe URLs, fallback UI, and full-size viewing",
   "requirements": [
     {
-      "id": "REQ-5",
-      "summary": "Add the uploaded photo as a static asset and display it in the Demo & Media image grid via siteConfig.",
+      "id": "REQ-6",
+      "summary": "Ensure the demo image file exists in frontend static assets at the public path referenced by the app so it ships in production.",
       "acceptanceCriteria": [
-        "The uploaded image file is added to the repo under a stable public path (e.g., within `frontend/public/assets/`), with a reasonable, URL-safe filename.",
-        "`frontend/src/siteConfig.ts` is updated so `siteConfig.media.images` includes the correct public URL for the added image (e.g., `/assets/...`).",
-        "The Demo & Media section renders the image in the existing image grid (via `frontend/src/components/sections/DemoMediaSection.tsx`) and no longer shows the \"Demo content coming soon\" placeholder when the image is present.",
-        "The page builds successfully and the image loads correctly in the browser without requiring backend changes."
+        "The file exists at the expected public path at build time (e.g., `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg`) and is included in the production build output.",
+        "Loading the image URL in the deployed app returns HTTP 200 and displays the image (no broken image icon)."
       ],
       "file_operations": [
         {
           "path": "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg",
           "operation": "create",
-          "description": "Add the provided image file (from \"WhatsApp Image 2026-02-06 at 9.23.49 AM.jpeg\") as a frontend static asset with a URL-safe filename, served publicly under /assets/."
-        },
+          "description": "Re-add the missing demo image into the public static assets directory so it is emitted as a production build asset and can be fetched at the expected path."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Resolve Demo & Media image URLs using the app base URL to avoid broken leading-slash paths in deployed environments.",
+      "acceptanceCriteria": [
+        "With the deployed canister URL (including any subpath/base), the demo image renders correctly without manual refreshes or URL edits.",
+        "`frontend/src/siteConfig.ts` and the DemoMedia section use a consistent convention (either relative paths like `assets/...` or base-url-resolved absolute URLs) so the image works in local dev and production."
+      ],
+      "file_operations": [
         {
           "path": "frontend/src/siteConfig.ts",
           "operation": "modify",
-          "description": "Update `siteConfig.media.images` to include the new static asset public URL (e.g., \"/assets/whatsapp-image-2026-02-06-092349.jpeg\") so Demo & Media renders the image grid instead of the placeholder."
+          "description": "Update `siteConfig.media.images` to use a consistent, base-path-safe convention (prefer relative asset references like `assets/...` rather than a hard-coded leading `/assets/...`) so the runtime can reliably resolve them in both local dev and production."
+        },
+        {
+          "path": "frontend/src/lib/resolveAppUrl.ts",
+          "operation": "create",
+          "description": "Add a small utility to resolve configured media image strings into deploy-safe URLs using the app base URL (e.g., `import.meta.env.BASE_URL`) while preserving already-absolute URLs (http/https)."
+        },
+        {
+          "path": "frontend/src/components/sections/DemoMediaSection.tsx",
+          "operation": "modify",
+          "description": "Use the shared URL resolver to convert `siteConfig.media.images` entries into base-path-safe `img`/link URLs so images render correctly when the app is served from a subpath."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Add a user-friendly fallback state when a Demo & Media image fails to load.",
+      "acceptanceCriteria": [
+        "If the image URL is invalid, the UI shows an English fallback state (not an empty/broken image) while keeping the rest of the section usable.",
+        "The console does not show uncaught runtime errors from image load failures."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/DemoMediaSection.tsx",
+          "operation": "modify",
+          "description": "Add per-image error handling (e.g., `onError`) and render a simple English fallback UI (placeholder block/message) when an image fails to load, ensuring failures do not throw uncaught runtime errors."
+        }
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "summary": "Make each Demo & Media image clickable to open the full-size original in a new tab/window.",
+      "acceptanceCriteria": [
+        "Clicking a demo image opens the full-resolution image in a new browser tab (with appropriate `target`/`rel` attributes).",
+        "This works for all entries in `siteConfig.media.images`."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/DemoMediaSection.tsx",
+          "operation": "modify",
+          "description": "Wrap each rendered demo image in a link that opens the resolved original image URL in a new tab/window using safe `target`/`rel` attributes, applying the behavior to all items in `siteConfig.media.images`."
         }
       ]
     }

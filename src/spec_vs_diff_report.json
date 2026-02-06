@@ -1,55 +1,38 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T03:58:29.647Z",
-  "summary": "REQ-5 is only partially evidenced by the diff summary: `siteConfig.ts` appears to have been expanded and (per `frontend-file-summaries.txt`) its `media.images` was updated, but the diff does not show any changes to `DemoMediaSection.tsx` and does not explicitly show the image file being added (the diff reports 0 added files). The diff also includes unrelated configuration/metadata changes not requested by REQ-5.",
-  "missing_requirements": [
-    {
-      "id": "REQ-5",
-      "requirement": "Add the uploaded image file to the repo under a stable public path (e.g., `frontend/public/assets/`) with a reasonable, URL-safe filename.",
-      "reason": "The diff summary reports \"Added: 0\" and lists no added files, so the addition of the actual JPEG cannot be confirmed from the diff itself (even though `frontend-file-summaries.txt` mentions an asset path).",
-      "evidence": [
-        "<file-diff> header: \"Added: 0\"",
-        "ADDED FILES: none",
-        "frontend-file-summaries.txt (mentions `frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg`, but this is not corroborated by an added-file entry)"
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "requirement": "Ensure the Demo & Media section renders the image in the existing image grid and no longer shows the \"Demo content coming soon\" placeholder when the image is present (via `frontend/src/components/sections/DemoMediaSection.tsx`).",
-      "reason": "`frontend/src/components/sections/DemoMediaSection.tsx` is not listed among modified files, so there is no evidence in the diff summary that placeholder logic/rendering behavior was updated.",
-      "evidence": [
-        "MODIFIED FILES list does not include `frontend/src/components/sections/DemoMediaSection.tsx`"
-      ]
-    }
-  ],
+  "generatedAt": "2026-02-06T04:07:43.545Z",
+  "summary": "REQ-6 through REQ-9 appear implemented: the demo image asset is present under public assets, Demo & Media image URLs are resolved against the app base path via a new helper, images have an error fallback UI, and images are clickable to open full-size in a new tab. However, the diff summary also indicates multiple unrelated landing page expansions/section changes that were not requested and may violate the stated non-goals (changes unrelated to Demo & Media).",
+  "missing_requirements": [],
   "hallucinated_features": [
     {
-      "description": "Large expansion of `frontend/src/siteConfig.ts` with new domain content and types (e.g., `Application`, `HysteresisNote`, practical applications list), beyond simply adding a media image URL.",
-      "reason": "REQ-5 only asks to add a static image asset and update `siteConfig.media.images` to include its URL; the diff shows extensive unrelated config/type additions and content changes.",
+      "description": "Added/expanded multiple new landing page/documentation sections and related navigation/config (e.g., PracticalApplicationsSection, ThresholdDiagramSection, ManualSection, ArduinoCodeSection, nav updates), which were not requested and are outside the Demo & Media scope.",
+      "reason": "BuildRequest non-goals explicitly state not to change landing page sections unrelated to Demo & Media; the diff summary shows broad additions/updates beyond Demo & Media.",
       "evidence": [
-        "frontend/src/siteConfig.ts (adds `Application`, `HysteresisNote`, expands `SiteConfig` and adds extensive new config content; truncated)",
-        "frontend-file-summaries.txt (describes structured data for practical applications and hysteresis note in `siteConfig.ts`)"
+        "frontend-file-summaries.txt (mentions PracticalApplicationsSection, ThresholdDiagramSection, ManualSection, ArduinoCodeSection, TopNav updates, App.tsx orchestration)",
+        "frontend/src/siteConfig.ts (summary indicates extended configuration for applications/hysteresis beyond media)"
       ]
     },
     {
-      "description": "Project metadata/state update unrelated to adding a demo/media image.",
-      "reason": "REQ-5 does not request changes to project state tracking files.",
+      "description": "Global styling, Tailwind config, SEO meta updates unrelated to Demo & Media.",
+      "reason": "Not requested by REQ-6/7/8/9 and appears to be general redesign/SEO work beyond fixing Demo & Media image loading.",
       "evidence": [
-        "project_state.json (modified)"
+        "frontend-file-summaries.txt (mentions frontend/src/index.css palette changes, frontend/tailwind.config.js extensions, frontend/index.html SEO/OG tags)"
       ]
     },
     {
-      "description": "Update to `frontend-file-summaries.txt` describing multiple features/sections unrelated to REQ-5.",
-      "reason": "REQ-5 does not request maintaining or changing summary/manifest files; the update appears broader than the requested image addition.",
+      "description": "Contact form behavior/backend client/query hook updates beyond Demo & Media.",
+      "reason": "Not requested; BuildRequest focuses only on Demo & Media image asset and behavior.",
       "evidence": [
-        "frontend-file-summaries.txt (modified; includes many unrelated section descriptions)"
+        "frontend-file-summaries.txt (mentions ContactSection validation/loading states, useSubmitContact.ts, backendClient.ts, useQueries.ts changes)"
       ]
     }
   ],
-  "confidence": 0.72,
+  "confidence": 0.74,
   "changed_files": [
     "frontend-file-summaries.txt",
+    "frontend/src/components/sections/DemoMediaSection.tsx",
+    "frontend/src/lib/resolveAppUrl.ts",
     "frontend/src/siteConfig.ts",
     "project_state.json"
   ]

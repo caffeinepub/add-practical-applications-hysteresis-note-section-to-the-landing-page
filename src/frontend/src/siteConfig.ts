@@ -135,7 +135,7 @@ export const siteConfig: SiteConfig = {
   ],
   media: {
     videoUrl: '',
-    images: ['/assets/whatsapp-image-2026-02-06-092349.jpeg'],
+    images: ['assets/whatsapp-image-2026-02-06-092349.jpeg'],
   },
   ctaLinks: {
     primary: {

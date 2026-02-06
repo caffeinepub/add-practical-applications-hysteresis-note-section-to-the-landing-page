@@ -1,26 +1,61 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T03:58:29.649Z",
+  "generatedAt": "2026-02-06T04:07:43.548Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 4,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-5",
-        "summary": "Add the user-uploaded image \"WhatsApp Image 2026-02-06 at 9.23.49 AM.jpeg\" to the frontend static assets and display it in the Demo & Media section.",
+        "id": "REQ-6",
+        "summary": "Re-add the user-uploaded demo image asset to the frontend static assets so it is present in production and matches the path referenced by the app (currently `frontend/src/siteConfig.ts` uses `/assets/whatsapp-image-2026-02-06-092349.jpeg`).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg",
-          "frontend/src/siteConfig.ts"
+          "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg"
         ],
         "matchedFiles": [
-          "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg",
-          "frontend/src/siteConfig.ts"
+          "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg"
+        ]
+      },
+      {
+        "id": "REQ-7",
+        "summary": "Make Demo & Media image URLs robust to the deployed base path by resolving `siteConfig.media.images` entries using the app base URL (avoid hard-coded leading `/` paths that can break in production).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/siteConfig.ts",
+          "frontend/src/lib/resolveAppUrl.ts",
+          "frontend/src/components/sections/DemoMediaSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/siteConfig.ts",
+          "frontend/src/lib/resolveAppUrl.ts",
+          "frontend/src/components/sections/DemoMediaSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-8",
+        "summary": "In `frontend/src/components/sections/DemoMediaSection.tsx`, add a user-friendly fallback when an image fails to load (e.g., show a short English error message and/or a placeholder block instead of a broken image).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/sections/DemoMediaSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/sections/DemoMediaSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Allow users to open the demo image at full size by making each Demo & Media image clickable (open the original image URL in a new tab/window).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/sections/DemoMediaSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/sections/DemoMediaSection.tsx"
         ]
       }
     ]
@@ -31,6 +66,8 @@
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/public/assets/whatsapp-image-2026-02-06-092349.jpeg",
+    "frontend/src/components/sections/DemoMediaSection.tsx",
+    "frontend/src/lib/resolveAppUrl.ts",
     "frontend/src/siteConfig.ts",
     "project_state.json",
     "scratch/component-selection.json",
